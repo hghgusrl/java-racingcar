@@ -1,7 +1,6 @@
 package racing.controller;
 
 import racing.domain.Racing;
-import racing.domain.RandomMoveStrategy;
 import racing.ui.InputView;
 import racing.ui.ResultView;
 
@@ -12,17 +11,15 @@ public class RacingMain {
 
     public static void main(String[] args) {
         // view
-//        InputView.setCarCount();
-        InputView.setCarName();
-        InputView.setTryCount();
-        Racing racing = new Racing();
+        int carCount = InputView.getCarCount();
+        int tryCount = InputView.getTryCount();
 
-        for(int i=0; i<InputView.getTryCount(); i++) {
-            racing.racingStart(new RandomMoveStrategy());
+        Racing racing = new Racing(carCount, tryCount);
+
+        for(int i=0; i<tryCount; i++) {
+            racing.racingStart(random);
             ResultView.viewResultView(racing.getCars());
         }
-
-        ResultView.winnerView(racing.findWinner());
     }
 
 }

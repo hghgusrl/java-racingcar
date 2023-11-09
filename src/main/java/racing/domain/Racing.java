@@ -1,10 +1,7 @@
 package racing.domain;
 
 
-import racing.ui.InputView;
-
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Random;
 
 public class Racing {
 
@@ -16,15 +13,24 @@ public class Racing {
 
     private Cars carList = new Cars();
 
-    public Racing(){
-        this.carCount = InputView.getCarCount();
-        this.tryCount = InputView.getTryCount();
-        carList.makeCarList(InputView.getCarName());
+    public Racing(int carCount, int tryCount){
+        this.carCount = carCount;
+        this.tryCount = tryCount;
+        makeCarList(carCount);
     }
 
-    public Cars racingStart(RandomMoveStrategy random){
+    private void makeCarList(int carCount) {
+        for(int i = 0; i< carCount; i++){
+            carList.addCar(new Car());
+        }
+    }
+
+    public Cars racingStart(Random random){
         validation(carCount, tryCount);
-        carList.move(random);
+        for(int i=0; i< carList.getSize(); i++){
+            Car car = carList.getCar(i);
+            car.moveCar(random.nextInt(10));
+        }
         return carList;
     }
 
@@ -32,11 +38,6 @@ public class Racing {
         if(carCount < 0 || tryCount < 0){
             throw new RuntimeException(CANNOT_BE_NEGATIVE_NUMBERS);
         }
-    }
-
-    public String findWinner(){
-        String winner = carList.findWinner();
-        return winner;
     }
 
     public Cars getCars(){
